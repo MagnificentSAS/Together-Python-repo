@@ -136,7 +136,7 @@ else:
     cow1 = args.f or "default"
     cow2 = args.F or "default"
 
-print(cowsay(
+cow_lines1 = cowsay(
     message=args.message1,
     cow=cow1,
     preset=get_preset(args),
@@ -145,16 +145,34 @@ print(cowsay(
     width=args.width,
     wrap_text=args.n,
     cowfile=get_cowfile(args.f),
-))
+).split('\n')
 
-print(cowsay(
+cow_lines2 = cowsay(
     message=args.message2,
     cow=cow2,
     preset=get_preset(args),
-    eyes=args.eyes1,
+    eyes=args.eyes2,
     tongue=args.tongue2,
     width=args.width,
     wrap_text=args.N,
     cowfile=get_cowfile(args.F),
-))
-#TODO: one by one cows
+).split('\n')
+
+max_len1 = 0
+for line in cow_lines1:
+    new_len = len(line)
+    max_len1 = new_len if new_len > max_len1 else max_len1
+
+cow_lines1_free_lines = " " * max_len1
+
+for i in range(len(cow_lines1)):
+    cow_lines1[i] += " " * (max_len1 - len(cow_lines1[i]))
+
+cow_lines1 = [cow_lines1_free_lines] * max(len(cow_lines2) - len(cow_lines1), 0) + cow_lines1
+cow_lines2 = [""] * max(len(cow_lines1) - len(cow_lines2), 0) + cow_lines2
+
+cow_lines = []
+for line1, line2 in zip(cow_lines1, cow_lines2):
+    cow_lines.append(line1 + line2)
+
+print("\n".join(cow_lines))
