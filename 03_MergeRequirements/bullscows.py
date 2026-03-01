@@ -1,3 +1,5 @@
+import random
+
 def bullcows(guess: str, mystery: str) -> (int, int):
     bulls = set()
     cows = set()
@@ -11,3 +13,15 @@ def bullcows(guess: str, mystery: str) -> (int, int):
     cows = cows - bulls
 
     return len(bulls), len(cows)
+
+def gameplay(ask, inform, words: list[str]):
+    mystery = random.choice(words)
+    attempt = 0
+
+    while True:
+        guess = ask("Введите слово: ", words)
+        attempt += 1
+        b, c = bullcows(guess, mystery)
+        inform("Быки: {}, Коровы: {}", b, c)
+        if guess == mystery:
+            print(f"Вы угадали за {attempt} попыток!")
