@@ -5,6 +5,8 @@ import random
 import sys
 import urllib.request
 
+from cowsay import cowsay
+
 def bullcows(guess: str, mystery: str) -> tuple[int, int]:
     bulls = set()
     cows = set()
@@ -41,7 +43,7 @@ def ask(prompt: str, valid: list[str] = None) -> str:
 
 def inform(format_string: str, bulls: int, cows: int) -> None:
     words = format_string.split("{}")
-    print(f"{words[0]}{bulls}{words[1]}{cows}{words[2]}")
+    print(cowsay(f"{words[0]}{bulls}{words[1]}{cows}{words[2]}"))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Сыграйте в быков и коров от al_bonch!")
