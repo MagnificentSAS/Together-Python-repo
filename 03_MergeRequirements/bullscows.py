@@ -34,10 +34,10 @@ def gameplay(ask, inform, words: list[str]) -> int:
             return attempt
 
 def ask(prompt: str, valid: list[str] = None) -> str:
-    print(prompt)
+    print(cowsay(prompt))
     word = sys.stdin.buffer.readline().decode('utf-8', errors='ignore').strip()
     while valid and word not in valid:
-        print(prompt)
+        print(cowsay(prompt))
         word = sys.stdin.buffer.readline().decode('utf-8', errors='ignore').strip()
     return word
 
