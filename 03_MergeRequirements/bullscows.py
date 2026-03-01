@@ -1,4 +1,9 @@
+#!/usr/bin/env python3
+import argparse
+import os
 import random
+import sys
+import urllib.request
 
 def bullcows(guess: str, mystery: str) -> tuple[int, int]:
     bulls = set()
@@ -27,11 +32,38 @@ def gameplay(ask, inform, words: list[str]) -> int:
             return attempt
 
 def ask(prompt: str, valid: list[str] = None) -> str:
-    word = input(prompt)
+    print(prompt)
+    word = sys.stdin.buffer.readline().decode('utf-8', errors='ignore').strip()
     while valid and word not in valid:
-        word = input(prompt)
+        print(prompt)
+        word = sys.stdin.buffer.readline().decode('utf-8', errors='ignore').strip()
     return word
 
 def inform(format_string: str, bulls: int, cows: int) -> None:
     words = format_string.split("{}")
     print(f"{words[0]}{bulls}{words[1]}{cows}{words[2]}")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Сыграйте в быков и коров от al_bonch!")
+    parser.add_argument("dict", help="Словарь")
+    parser.add_argument("length", nargs="?", type=int, default=5, help="Длина слов (по умолчанию 5)")
+    args = parser.parse_args()
+
+    if os.path.exists(args.dict):
+        with open(args.dict, 'r', encoding='utf-8') as f:
+            words = f.read().splitlines()
+    else: # args.dict.startswith(("http://", "https://", "ftp://")):
+        print("Загрузка слов!")
+        with urllib.request.urlopen(args.dict) as r:
+            words = r.read().decode('utf-8').splitlines()
+        print("Загрузка завершена")
+    #else:
+     #   print("Нет такого файла и ссылка не верна")
+      #  exit(1)
+
+    game_dict = [w for w in words if len(w) == args.length]
+    if len(game_dict) == 0:
+        print("Пустой словарь :(")
+        exit(1)
+
+    print("Вы выиграли, отгадав за ", gameplay(ask, inform, game_dict), " попыток!")
