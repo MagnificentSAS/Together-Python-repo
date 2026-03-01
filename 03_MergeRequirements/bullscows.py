@@ -1,6 +1,6 @@
 import random
 
-def bullcows(guess: str, mystery: str) -> (int, int):
+def bullcows(guess: str, mystery: str) -> tuple[int, int]:
     bulls = set()
     cows = set()
     for a, b in zip(guess, mystery):
@@ -31,3 +31,7 @@ def ask(prompt: str, valid: list[str] = None) -> str:
     while valid and word not in valid:
         word = input(prompt)
     return word
+
+def inform(format_string: str, bulls: int, cows: int) -> None:
+    words = format_string.split("{}")
+    print(f"{words[0]}{bulls}{words[1]}{cows}{words[2]}")
