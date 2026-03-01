@@ -14,7 +14,7 @@ def bullcows(guess: str, mystery: str) -> (int, int):
 
     return len(bulls), len(cows)
 
-def gameplay(ask, inform, words: list[str]):
+def gameplay(ask, inform, words: list[str]) -> int:
     mystery = random.choice(words)
     attempt = 0
 
@@ -24,4 +24,10 @@ def gameplay(ask, inform, words: list[str]):
         b, c = bullcows(guess, mystery)
         inform("Быки: {}, Коровы: {}", b, c)
         if guess == mystery:
-            print(f"Вы угадали за {attempt} попыток!")
+            return attempt
+
+def ask(prompt: str, valid: list[str] = None) -> str:
+    word = input(prompt)
+    while valid and word not in valid:
+        word = input(prompt)
+    return word
